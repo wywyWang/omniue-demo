@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OmniUE: Omni-Interactive Universal Embedder</title>
+  <meta name="description" content="OmniUE is an omni-interactive universal embedder for text, video, and audio, with user prompts as text, visual regions, and audio spans. NeurIPS 2026.">
+  <meta name="author" content="Wei-Yao Wang, Kazuya Tateishi, Shuyang Cui, Christian Simon, Takashi Shibuya, Shusuke Takahashi, Yuki Mitsufuji">
+  <meta property="og:title" content="OmniUE: Omni-Interactive Universal Embedder">
+  <meta property="og:description" content="Unified embeddings across text, video, and audio, conditioned on text, visual regions, and audio spans.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://wywywang.github.io/omniue/">
+  <meta property="og:image" content="static/images/teaser.jpg">
+  <meta name="citation_title" content="Omni-Interactive Universal Embedder">
+  <meta name="citation_author" content="Wang, Wei-Yao">
+  <meta name="citation_author" content="Tateishi, Kazuya">
+  <meta name="citation_author" content="Cui, Shuyang">
+  <meta name="citation_author" content="Simon, Christian">
+  <meta name="citation_author" content="Shibuya, Takashi">
+  <meta name="citation_author" content="Takahashi, Shusuke">
+  <meta name="citation_author" content="Mitsufuji, Yuki">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="NeurIPS 2026">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2608.27044">
+  <link rel="icon" href="static/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+  <nav class="site-nav navbar" aria-label="Page">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#top">OmniUE</a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navMenu" class="navbar-menu">
+        <div class="navbar-end">
+          <a class="navbar-item" href="#abstract">Abstract</a>
+          <a class="navbar-item" href="#method">Method</a>
+          <a class="navbar-item" href="#omnichoir">OmniCHOIR</a>
+          <a class="navbar-item" href="#results">Results</a>
+          <a class="navbar-item" href="#bibtex">BibTeX</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero-dark">
+      <div class="hero-inner">
+        <span class="hero-badge"><span class="dot"></span>NeurIPS 2026</span>
+        <h1 class="publication-title">Omni-Interactive Universal Embedder</h1>
+        <div class="publication-authors">
+          <span class="author-block"><a href="https://wywywang.github.io/" target="_blank" rel="noopener"><sup class="aff"><i class="fas fa-gamepad"></i></sup>Wei-Yao Wang</a><sup>*</sup>,</span>
+          <span class="author-block"><sup class="aff"><i class="fas fa-gamepad"></i></sup>Kazuya Tateishi,</span>
+          <span class="author-block"><sup class="aff"><i class="fas fa-gamepad"></i></sup>Shuyang Cui,</span>
+          <span class="author-block"><sup class="aff"><i class="fas fa-gamepad"></i></sup>Christian Simon,</span>
+          <span class="author-block"><sup class="aff"><i class="fas fa-headphones"></i></sup>Takashi Shibuya,</span>
+          <span class="author-block"><sup class="aff"><i class="fas fa-gamepad"></i></sup>Shusuke Takahashi,</span>
+          <span class="author-block"><sup class="aff"><i class="fas fa-gamepad"></i></sup> <sup class="aff"><i class="fas fa-headphones"></i></sup>Yuki Mitsufuji</span>
+        </div>
+        <div class="venue-line">
+          <strong><sup class="aff"><i class="fas fa-gamepad"></i></sup>Sony Group Corporation</strong> &nbsp;·&nbsp; <strong><sup class="aff"><i class="fas fa-headphones"></i></sup>Sony AI</strong>
+        </div>
+        <p class="lead-note"><sup>*</sup>Project lead</p>
+        <div class="publication-links">
+          <a class="button is-dark" href="https://arxiv.org/abs/2608.27044" target="_blank" rel="noopener">
+            <span class="icon"><i class="fas fa-file-pdf"></i></span>
+            <span>Read the paper</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="teaser-wrap">
+      <div class="teaser-frame" data-reveal>
+        <img src="static/images/teaser.jpg" alt="OmniUE retrieves text, image, video, and audio from queries conditioned on text, visual regions, and audio spans.">
+      </div>
+      <p class="caption centered">
+        OmniUE takes omni-interactive prompts and queries and retrieves targets in any modality: text, image, video, or audio.
+        Prompts can be text, a visual region (click, box, or mask), an audio span, or any combination of them.
+      </p>
+    </section>
+
+    <section class="section-tight section-alt" id="abstract">
+      <div class="container is-max-desktop has-text-centered" data-reveal>
+        <span class="section-kicker">Abstract</span>
+        <h2 class="title is-3">One embedding space, any interaction</h2>
+        <div class="content has-text-justified centered">
+          <p>
+            Multimodal representation learning has been shifting from two-tower architectures to LLM-based embedders.
+            Existing models still treat text as the main way a user specifies intent, and they rarely cover video and audio together.
+            OmniUE is an omni-interactive universal embedder. It learns a unified embedding for arbitrary combinations of text, video, and audio, and it conditions that embedding on user prompts given as text, visual regions of interest, or audio spans.
+          </p>
+          <p>
+            Visual and audio segmenters turn those prompts into entity- and span-level features. Learnable tokens read from intermediate layers of an omni-LLM are then aggregated into a single user-conditioned embedding.
+            To test this setting we introduce OmniCHOIR, a compositional text-video-audio-to-audio retrieval benchmark with unimodal and multimodal interaction prompts.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="num">+10.4%</span><span class="label">MMEB-v2-video<br>text-interactive video</span></div>
+          <div class="stat"><span class="num">+1.0%</span><span class="label">MAEB<br>text-interactive audio</span></div>
+          <div class="stat"><span class="num">+83.1%</span><span class="label">SCaR<br>visual-interactive</span></div>
+          <div class="stat"><span class="num">+21.9%</span><span class="label">OmniCHOIR<br>omni-interactive</span></div>
+        </div>
+        <p class="table-note centered">Average relative gain over the strongest comparable baselines. Absolute scores are in the tables below.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" id="method">
+      <div class="container is-max-desktop" data-reveal>
+        <span class="section-kicker">Method</span>
+        <h2 class="title is-3">Query context plus a prompt stream</h2>
+        <div class="pipeline">
+          <span class="step"><span class="chip-dot"></span>Text / video / audio query</span>
+          <span class="arrow">→</span>
+          <span class="step"><span class="chip-dot"></span>SAM&nbsp;3 + SAM-Audio prompts</span>
+          <span class="arrow">→</span>
+          <span class="step"><span class="chip-dot"></span>Omni-LLM (Qwen2.5-Omni)</span>
+          <span class="arrow">→</span>
+          <span class="step"><span class="chip-dot"></span>Learnable tokens</span>
+          <span class="arrow">→</span>
+          <span class="step"><span class="chip-dot"></span>Context aggregation</span>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            OmniUE is built on Qwen2.5-Omni (3B and 7B). A query stream encodes the holistic input: text, silent video, and audio.
+            A second stream encodes the interaction. SAM&nbsp;3 segments visual prompts (points, boxes, or masks). SAM-Audio separates the sound indicated by a temporal span, text, or video.
+            Connectors with convolution and self-attention map those feature maps into the LLM token space.
+          </p>
+          <p>
+            Four learnable tokens are appended to the sequence. Their hidden states are taken every four layers and fused with learned layer-token weights, then mean-pooled into one embedding.
+            Training uses InfoNCE with GradCache on about 3.5M public multimodal samples. Visual and audio prompts are not in the training data: those interaction abilities emerge at test time, while text instructions are the training-time interaction.
+          </p>
+        </div>
+        <figure class="figure-frame" data-reveal>
+          <img src="static/images/framework.jpg" alt="OmniUE architecture: audio and vision segmenters, omni-LLM, learnable tokens, and context aggregation.">
+          <figcaption class="caption">
+            Segmenter streams (fire: trained, snowflake: frozen) inject user prompts. Context aggregation weights learnable tokens across layers to produce the embedding used for contrastive learning.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section-tight section-alt" id="omnichoir">
+      <div class="container is-max-desktop" data-reveal>
+        <span class="section-kicker">Benchmark</span>
+        <h2 class="title is-3">OmniCHOIR</h2>
+        <div class="content has-text-justified">
+          <p>
+            Existing embedding benchmarks score text instructions on video or audio, or visual prompts on images.
+            OmniCHOIR evaluates text, visual masks, and audio spans, alone and together, on text-video-audio-to-audio retrieval.
+            Given a video, its mixed audio, and a prompt, the model retrieves the target sound together with its background from 16 candidates (Recall@1).
+          </p>
+          <p>
+            We start from held-out SAM-Audio-Bench clips, separate the target with SAM-Audio-Large, and use Qwen3-Omni-30B to propose a background category and hard negatives from ESC-50.
+            A mixer injects the background at a random time and level (−15 dB to −5 dB). Each item has one reference, five background replacements, five same-category target swaps, and five different-category target swaps. After filtering, the benchmark has 479 ten-second clips.
+          </p>
+        </div>
+        <figure class="figure-frame" data-reveal>
+          <img src="static/images/omnichoir.jpg" alt="OmniCHOIR collection pipeline from mixed video-audio to compositional audio candidates.">
+          <figcaption class="caption">
+            Collection pipeline. The reference mixes the separated target with a scene-plausible background. Negatives change the background, the target within its class, or both.
+          </figcaption>
+        </figure>
+
+        <h3 class="title is-4 mt-6">Examples</h3>
+        <p class="caption" style="margin-top:0">
+          Each clip is a query. The task is to pick the reference audio that matches the highlighted source and the background, not a same-class sound or a swapped background.
+        </p>
+
+        <div class="example-carousel">
+          <button class="carousel-arrow prev" type="button" aria-label="Previous example">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <div class="example-track">
+            <article class="example-card">
+              <h3>Accordion with chirping birds in the background</h3>
+              <p class="caption" style="margin-top:0">Text prompt: “Accordion with chirping birds in the background.” Audio span: 4.4s–6.2s. Visual prompt: the accordion mask.</p>
+              <div class="prompt-grid">
+                <div>
+                  <div class="prompt-label">Query video and mixture</div>
+                  <video controls preload="metadata" src="static/examples/accordion/video.mp4"></video>
+                </div>
+                <div>
+                  <div class="prompt-label">Visual prompt</div>
+                  <img src="static/examples/accordion/mask_overlay.png" alt="Accordion highlighted as the visual prompt.">
+                </div>
+                <div>
+                  <div class="prompt-label">Audio span</div>
+                  <audio controls preload="metadata" src="static/examples/accordion/span_audio.wav"></audio>
+                </div>
+              </div>
+              <div class="candidate-list">
+                <div class="candidate"><span class="tag tag-gold">Reference</span><audio controls preload="none" src="static/examples/accordion/gold.wav"></audio></div>
+                <div class="candidate"><span class="tag tag-bg">Background swap</span><audio controls preload="none" src="static/examples/accordion/bg_swap_0.wav"></audio></div>
+                <div class="candidate"><span class="tag tag-same">Same class</span><audio controls preload="none" src="static/examples/accordion/same_cat_0.wav"></audio></div>
+                <div class="candidate"><span class="tag tag-diff">Different class</span><audio controls preload="none" src="static/examples/accordion/diff_cat_0.wav"></audio></div>
+              </div>
+            </article>
+
+            <article class="example-card">
+              <h3>Female speaking with sea waves in the background</h3>
+              <p class="caption" style="margin-top:0">Text prompt: “Female speaking with sea waves in the background.” Audio span: 5.0s–7.0s. Visual prompt: the speaker mask.</p>
+              <div class="prompt-grid">
+                <div>
+                  <div class="prompt-label">Query video and mixture</div>
+                  <video controls preload="metadata" src="static/examples/speech/video.mp4"></video>
+                </div>
+                <div>
+                  <div class="prompt-label">Visual prompt</div>
+                  <img src="static/examples/speech/mask_overlay.png" alt="Speaker highlighted as the visual prompt.">
+                </div>
+                <div>
+                  <div class="prompt-label">Audio span</div>
+                  <audio controls preload="metadata" src="static/examples/speech/span_audio.wav"></audio>
+                </div>
+              </div>
+              <div class="candidate-list">
+                <div class="candidate"><span class="tag tag-gold">Reference</span><audio controls preload="none" src="static/examples/speech/gold.wav"></audio></div>
+                <div class="candidate"><span class="tag tag-bg">Background swap</span><audio controls preload="none" src="static/examples/speech/bg_swap_0.wav"></audio></div>
+                <div class="candidate"><span class="tag tag-same">Same class</span><audio controls preload="none" src="static/examples/speech/same_cat_0.wav"></audio></div>
+                <div class="candidate"><span class="tag tag-diff">Different class</span><audio controls preload="none" src="static/examples/speech/diff_cat_0.wav"></audio></div>
+              </div>
+            </article>
+          </div>
+          <button class="carousel-arrow next" type="button" aria-label="Next example">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="carousel-dots"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="results">
+      <div class="container is-max-widescreen" data-reveal>
+        <div class="has-text-centered">
+          <span class="section-kicker">Results</span>
+          <h2 class="title is-3">OmniUE vs. prior embedders</h2>
+          <p class="caption centered" style="margin-top:0">Best score in each column is highlighted. Rows tagged <strong>Ours</strong> are OmniUE.</p>
+        </div>
+
+        <h3 class="title is-5 mt-6">MMEB-v2-video — text-interactive video</h3>
+        <div class="table-wrap">
+          <table class="results">
+            <thead>
+              <tr><th>Model</th><th>CLS (5)</th><th>QA (5)</th><th>RET (5)</th><th>MRET (3)</th><th>Overall (18)</th></tr>
+            </thead>
+            <tbody>
+              <tr class="group"><td colspan="6">Text + image + video</td></tr>
+              <tr><td>VLM2Vec-v2 (Qwen2-VL-2B)</td><td>39.3</td><td>34.3</td><td>28.8</td><td>38.5</td><td>34.9</td></tr>
+              <tr><td>UME-R1 (Qwen2-VL-2B)</td><td>44.3</td><td>51.2</td><td>32.9</td><td>39.7</td><td>42.2</td></tr>
+              <tr><td>UniME-V2 (LLaVA-OneVision-7B)</td><td>37.2</td><td>50.6</td><td>28.9</td><td>39.6</td><td>39.0</td></tr>
+              <tr><td>UME-R1 (Qwen2-VL-7B)</td><td>48.6</td><td>60.7</td><td>38.2</td><td>39.3</td><td>47.5</td></tr>
+              <tr><td>CAFe (LLaVA-OneVision-7B)</td><td>35.8</td><td>58.7</td><td>34.4</td><td>39.5</td><td>42.4</td></tr>
+              <tr class="group"><td colspan="6">Text + image + video + audio</td></tr>
+              <tr><td>Omni-Embed-Nemotron (3B)</td><td>40.5</td><td>44.3</td><td>32.7</td><td>25.6</td><td>36.9</td></tr>
+              <tr><td>LCO-Emb (3B)</td><td>42.9</td><td>56.7</td><td>30.0</td><td>43.8</td><td>43.3</td></tr>
+              <tr><td>e5-omni (3B)</td><td>40.2</td><td>48.5</td><td>33.2</td><td>40.7</td><td>40.6</td></tr>
+              <tr><td>LCO-Emb (7B)</td><td>39.3</td><td>57.6</td><td>24.8</td><td>26.5</td><td>38.2</td></tr>
+              <tr><td>e5-omni (7B)</td><td>46.6</td><td>52.9</td><td>36.7</td><td>34.2</td><td>43.5</td></tr>
+              <tr><td>WAVE (7B)</td><td>50.7</td><td>45.9</td><td>34.7</td><td>39.5</td><td>43.1</td></tr>
+              <tr class="ours"><td>OmniUE-3B</td><td>51.1</td><td>57.8</td><td>36.9</td><td class="best">47.7</td><td>48.4</td></tr>
+              <tr class="ours"><td>OmniUE-7B</td><td class="best">57.8</td><td class="best">62.9</td><td class="best">40.9</td><td>41.3</td><td class="best">51.8</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">Gains of OmniUE-3B / 7B over the best baseline of the same size: overall +5.1 / +4.3.</p>
+
+        <h3 class="title is-5 mt-6">MAEB — text-interactive audio</h3>
+        <div class="table-wrap">
+          <table class="results">
+            <thead>
+              <tr>
+                <th>Model</th><th>Clf</th><th>M.Clf</th><th>PC</th><th>Rrnk</th><th>Clust</th><th>A.Rtrvl</th><th>X.Rtrvl</th><th>Zero Clf.</th><th>Overall</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>MS CLAP 2023</td><td>45.0</td><td>5.8</td><td>53.6</td><td>75.4</td><td>15.2</td><td>87.3</td><td>9.4</td><td>12.6</td><td>31.1</td></tr>
+              <tr><td>LAION CLAP</td><td>51.7</td><td>2.3</td><td>51.9</td><td>66.8</td><td>6.6</td><td>93.2</td><td>9.8</td><td>14.9</td><td>32.2</td></tr>
+              <tr><td>LCO-Emb (3B)</td><td>56.4</td><td>41.6</td><td>66.7</td><td>75.4</td><td>1.3</td><td>67.7</td><td class="best">50.3</td><td>62.2</td><td>50.7</td></tr>
+              <tr><td>Qwen2-Audio-7B</td><td class="best">62.7</td><td>10.7</td><td>56.9</td><td>80.8</td><td class="best">12.7</td><td>33.9</td><td>1.6</td><td>12.4</td><td>33.7</td></tr>
+              <tr><td>LCO-Emb (7B)</td><td>58.0</td><td>45.7</td><td>67.3</td><td>78.7</td><td>1.7</td><td>78.2</td><td class="best">50.3</td><td>64.5</td><td>52.2</td></tr>
+              <tr class="ours"><td>OmniUE-3B</td><td>57.3</td><td>35.3</td><td>67.5</td><td class="best">88.4</td><td>1.7</td><td>81.1</td><td>46.5</td><td>63.5</td><td>50.5</td></tr>
+              <tr class="ours"><td>OmniUE-7B</td><td>59.1</td><td class="best">49.9</td><td class="best">68.8</td><td>88.2</td><td>2.7</td><td class="best">93.3</td><td>47.7</td><td class="best">67.1</td><td class="best">53.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">OmniUE-7B is best overall (53.4). Against LCO-Emb-7B it leads 7 of 8 meta-tasks. Clustering stays higher for Qwen2-Audio and the CLAP models, and cross-modal retrieval stays higher for LCO-Emb.</p>
+
+        <h3 class="title is-5 mt-6">SCaR — visual-interactive text-image-to-text</h3>
+        <div class="table-wrap">
+          <table class="results">
+            <thead>
+              <tr><th>Model</th><th>RefCOCO+</th><th>RefCOCOg</th><th>VisualGenome</th><th>COCO-Stuff</th><th>ADE20K</th><th>Overall</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>VLM2Vec-2B</td><td>24.5</td><td>29.5</td><td>22.3</td><td>19.4</td><td>24.6</td><td>24.1</td></tr>
+              <tr><td>VLM2Vec-7B</td><td>23.2</td><td>29.1</td><td>14.7</td><td>25.0</td><td>22.4</td><td>22.9</td></tr>
+              <tr><td>MMRet-7B</td><td>27.1</td><td>21.8</td><td>15.2</td><td>26.0</td><td>22.6</td><td>22.5</td></tr>
+              <tr><td>UniME-7B</td><td>31.4</td><td>32.8</td><td>19.0</td><td>25.3</td><td>23.0</td><td>26.3</td></tr>
+              <tr><td>VIRTUE-2B</td><td>28.8</td><td>42.4</td><td>24.4</td><td>29.9</td><td>27.5</td><td>30.6</td></tr>
+              <tr><td>VIRTUE-7B</td><td>33.0</td><td>35.3</td><td>19.6</td><td>27.1</td><td>23.8</td><td>27.8</td></tr>
+              <tr class="ours"><td>OmniUE-3B</td><td>64.4</td><td>57.5</td><td class="best">36.8</td><td>57.0</td><td>41.0</td><td>51.3</td></tr>
+              <tr class="ours"><td>OmniUE-7B</td><td class="best">65.3</td><td class="best">66.2</td><td>35.5</td><td class="best">61.6</td><td class="best">47.5</td><td class="best">55.2</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">Overall gain over the best 2B / 7B baseline: +20.7 / +27.4 points. The task is region-level caption retrieval from an image, a text instruction, and a box.</p>
+
+        <h3 class="title is-5 mt-6">OmniCHOIR — omni-interactive audio retrieval</h3>
+        <div class="table-wrap">
+          <table class="results">
+            <thead>
+              <tr>
+                <th>Model</th><th>Text</th><th>Span</th><th>Mask</th><th>Text+Span</th><th>Text+Mask</th><th>Span+Mask</th><th>All three</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>LAION CLAP</td><td>16.1</td><td>1.7 / 12.7</td><td>—</td><td>12.7</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>ImageBind</td><td>16.8</td><td>3.3 / 13.5</td><td>—</td><td>18.1</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>LCO-Emb-3B</td><td>19.6</td><td>18.7</td><td>—</td><td>20.5</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>LCO-Emb-7B</td><td>22.3</td><td>22.4</td><td>—</td><td>23.8</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>WAVE-7B</td><td>20.0</td><td>23.1 / 23.4</td><td>—</td><td>24.5 / 24.7</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr class="ours"><td>OmniUE-3B</td><td>23.6</td><td>25.3</td><td>25.6</td><td>23.6</td><td>25.7</td><td>25.7</td><td>26.4</td></tr>
+              <tr class="ours"><td>OmniUE-7B</td><td class="best">25.5</td><td class="best">26.3</td><td class="best">26.7</td><td class="best">27.4</td><td class="best">26.7</td><td class="best">27.6</td><td class="best">28.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">
+          Recall@1. For baselines that cannot take a span, the pair is “span written as text / audio cropped to the span.”
+          Masks and spans each beat text-only prompting, and using all three prompts is best (28.4).
+        </p>
+      </div>
+    </section>
+
+    <section class="section-tight section-alt" id="bibtex">
+      <div class="container is-max-desktop" data-reveal>
+        <span class="section-kicker">Cite this work</span>
+        <div class="bibtex-header">
+          <h2 class="title is-3" style="margin-bottom:0">BibTeX</h2>
+          <button class="copy-bibtex-btn" id="copy-bibtex" type="button">
+            <i class="fas fa-copy"></i><span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@inproceedings{wang2026omniue,
+  title     = {Omni-Interactive Universal Embedder},
+  author    = {Wang, Wei-Yao and Tateishi, Kazuya and Cui, Shuyang and
+               Simon, Christian and Shibuya, Takashi and Takahashi, Shusuke and
+               Mitsufuji, Yuki},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          Page layout follows the
+          <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a>,
+          adapted from <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll(".navbar-burger").forEach(function (burger) {
+      burger.addEventListener("click", function () {
+        burger.classList.toggle("is-active");
+        document.getElementById(burger.dataset.target).classList.toggle("is-active");
+      });
+    });
+    document.querySelectorAll("#navMenu a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        document.querySelector(".navbar-burger").classList.remove("is-active");
+        document.getElementById("navMenu").classList.remove("is-active");
+      });
+    });
+    document.getElementById("copy-bibtex").addEventListener("click", function () {
+      var text = document.querySelector("#bibtex-code code").innerText;
+      var label = this.querySelector(".copy-text");
+      navigator.clipboard.writeText(text).then(function () {
+        label.textContent = "Copied";
+        setTimeout(function () { label.textContent = "Copy"; }, 1500);
+      });
+    });
+    document.querySelectorAll(".example-carousel").forEach(function (carousel) {
+      var track = carousel.querySelector(".example-track");
+      var slides = Array.prototype.slice.call(carousel.querySelectorAll(".example-card"));
+      var dotsWrap = carousel.querySelector(".carousel-dots");
+      var prevBtn = carousel.querySelector(".carousel-arrow.prev");
+      var nextBtn = carousel.querySelector(".carousel-arrow.next");
+      var index = 0;
+      var dots = slides.map(function (_, i) {
+        var dot = document.createElement("button");
+        dot.type = "button";
+        dot.setAttribute("aria-label", "Go to example " + (i + 1));
+        dot.addEventListener("click", function () { goTo(i); });
+        dotsWrap.appendChild(dot);
+        return dot;
+      });
+      function goTo(i) {
+        index = (i + slides.length) % slides.length;
+        track.scrollTo({ left: index * track.clientWidth, behavior: "instant" });
+        dots.forEach(function (dot, di) { dot.classList.toggle("is-active", di === index); });
+      }
+      window.addEventListener("resize", function () {
+        track.scrollTo({ left: index * track.clientWidth, behavior: "instant" });
+      });
+      prevBtn.addEventListener("click", function () { goTo(index - 1); });
+      nextBtn.addEventListener("click", function () { goTo(index + 1); });
+      goTo(0);
+    });
+    if ("IntersectionObserver" in window) {
+      var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll("[data-reveal]").forEach(function (el) {
+        revealObserver.observe(el);
+      });
+    } else {
+      document.querySelectorAll("[data-reveal]").forEach(function (el) {
+        el.classList.add("is-visible");
+      });
+    }
+  </script>
+</body>
+</html>
